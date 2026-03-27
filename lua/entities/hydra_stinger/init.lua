@@ -1,4 +1,3 @@
-
 AddCSLuaFile( "cl_init.lua" )
 AddCSLuaFile( "shared.lua" )
 include( 'shared.lua' )
@@ -11,7 +10,7 @@ ENT.ignoretable = {
 function ENT:Initialize()
 
    self.Entity:SetModel( "models/improvedhydra/hydrahead_stinger.mdl" ) 
-   self.Entity:SetMaterial("models/hydra/bodysplit")
+   self.Entity:SetMaterial("cable/cable2")
    self.Entity:PhysicsInit( SOLID_VPHYSICS )
    self.Entity:SetMoveType( MOVETYPE_VPHYSICS )
    self.Entity:SetSolid( SOLID_VPHYSICS )
@@ -54,9 +53,9 @@ function ENT:Initialize()
 
    local light = ents.Create("prop_dynamic")
    light:SetModel( "models/improvedhydra/hydrahead_stinger.mdl" ) 
-    light:SetMaterial("models/hydra/bodysplit") 
+   light:SetMaterial("cable/cable2")
 	light:SetModelScale(0.6)
-	light:SetColor(Color(0,255,50))
+	light:SetColor(Color(15,15,15))
     light:SetPos( Vector( self:GetPos()) + self:GetUp() * 0)
     light:SetAngles(Angle(0, 0, 180)) 
     light:SetParent(self)
@@ -191,8 +190,6 @@ function ENT:Think()
 			
 			local PIgnore = GetConVarNumber("ai_ignoreplayers")
 			
-			
-			
 			for _,i in pairs(targets) do
 				local iclass = i:GetClass()
                 
@@ -221,8 +218,6 @@ function ENT:Think()
 		self:SetOwner( self.target)
 		
 	end
-	
-	
 	
 	 
 	 return true
