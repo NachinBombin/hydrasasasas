@@ -1,33 +1,10 @@
-	
 include('shared.lua')
 
-language.Add("sent_tentacle", "Hydra")
+language.Add("sent_tentacle", "Cable Stinger")
 
 hyd_res = CreateClientConVar( "cl_hydra_resolution", 15, true )
 
-/*
-local function VTExplode( vecT ) --cracks vector tables apart for use in B-splines
-	local lX, lY, lZ = {}, {}, {}
-	for p,i in pairs(vecT) do
-		lX[p] = i.x
-		lY[p] = i.y
-		lZ[p] = i.z
-	end
-	return lX, lY, lZ
-end
-
-local function VTBuild( X, Y, Z ) --Takes B-spline data and puts it into vector tables
-	local rvec = {}
-	for i,x in pairs(X) do
-		rvec[i] = Vector(X[i], Y[i], Z[i])
-	end
-	return rvec
-end*/
-
---I'm not sure how garry's bspline function works, but it confuses the hell out of me. I'll come back to it when I know the math better. For now, recursion.
---According to kogitsune, they don't work at all. lol!
-
-local cablemat = Material( "models/hydra/bodysplit" )
+local cablemat = Material( "cable/cable2" )
 
 local function BPoint3D( Points, percent)
 	local points = Points
@@ -61,15 +38,6 @@ local function BSpline3D( Points, number)
 	return pointtable
 end
 
-/*local function bsplinepoint( Spoints, numPoints )
-	local x, y, z = VTExplode( Spoints )
-	local retvec
-	for i = 1, numPoints do
-		
-	end
-	
-end*/
-
 function ENT:Think()
 	local base = self:GetNetworkedEntity("base", self.Entity )
 	if (!IsValid(base)) then return end
@@ -98,25 +66,24 @@ function ENT:Draw()
 	self:DrawModel()
 	render.SetMaterial(cablemat)
 	render.StartBeam( res + 1 )
-    render.AddBeam( Bpoints[1], 15, 0, Color( 255, 255, 255, 255 ) )
+    render.AddBeam( Bpoints[1], 15, 0, Color( 30, 30, 30, 255 ) )
 	for i = 2, (res - 1) do
-		render.AddBeam( bres[i], 5, i, Color( 255, 255, 255, 255 ) )
+		render.AddBeam( bres[i], 5, i, Color( 30, 30, 30, 255 ) )
 	end
-	render.AddBeam( bres[res], 7, 2, Color( 255, 255, 255, 255 ) )
-	render.AddBeam( bres[res] + self:GetForward() * 10, 7.5, 5, Color( 255, 255, 255, 255 ) ) 
+	render.AddBeam( bres[res], 7, 2, Color( 30, 30, 30, 255 ) )
+	render.AddBeam( bres[res] + self:GetForward() * 10, 7.5, 5, Color( 30, 30, 30, 255 ) )
 	render.EndBeam()
-	    local dlight = DynamicLight(self:EntIndex())	
-	
+
+	-- Dynamic light: near-black, no blue glow
+	local dlight = DynamicLight(self:EntIndex())
 	if dlight then
-		local r, g, b, a = self:GetColor()
 		dlight.Pos = self:GetPos() + self:GetUp() * 0
-		dlight.r = 5
-		dlight.g = 155
-		dlight.b = 255
-		dlight.Brightness = 2
-		dlight.Size = 250
+		dlight.r = 20
+		dlight.g = 20
+		dlight.b = 20
+		dlight.Brightness = 0.5
+		dlight.Size = 100
 		dlight.Decay = 0
 		dlight.DieTime = CurTime() + 0.1
-	end 
+	end
 end
-
